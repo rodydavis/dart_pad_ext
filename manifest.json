@@ -1,7 +1,7 @@
 {
-  "name": "Getting Started Example",
+  "name": "Flutter Toolbox",
   "version": "1.0",
-  "description": "Build an Extension!",
+  "description": "Flutter Toolbox for DartPad",
   "permissions": ["activeTab", "declarativeContent", "storage"],
   "options_page": "options.html",
   "background": {
