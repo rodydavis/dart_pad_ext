@@ -2,13 +2,14 @@ name: templates
 description: A new Flutter project.
 version: 1.0.0+1
 environment:
-  sdk: ">=2.1.0 <3.0.0"
+  sdk: ">=2.6.0 <3.0.0"
 
 dependencies:
   flutter:
     sdk: flutter
   flutter_colorpicker: ^0.2.6
   cupertino_icons: ^0.1.2
+  color: ^2.1.1
 
 dev_dependencies:
   flutter_test:

@@ -38,6 +38,12 @@
       "languageVersion": "2.0"
     },
     {
+      "name": "color",
+      "rootUri": "file:///usr/local/Caskroom/flutter/1.2.1/flutter/.pub-cache/hosted/pub.dartlang.org/color-2.1.1",
+      "packageUri": "lib/",
+      "languageVersion": "2.0"
+    },
+    {
       "name": "convert",
       "rootUri": "file:///usr/local/Caskroom/flutter/1.2.1/flutter/.pub-cache/hosted/pub.dartlang.org/convert-2.1.1",
       "packageUri": "lib/",
@@ -179,10 +185,10 @@
       "name": "templates",
       "rootUri": "../",
       "packageUri": "lib/",
-      "languageVersion": "2.1"
+      "languageVersion": "2.6"
     }
   ],
-  "generated": "2019-11-21T17:37:33.309877Z",
+  "generated": "2019-11-21T17:37:53.851520Z",
   "generator": "pub",
   "generatorVersion": "2.7.0"
 }

@@ -1,4 +1,11 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
+import 'dart:js' as js;
+
+import 'package:flutter_colorpicker/flutter_colorpicker.dart';
+
+import 'colors.dart';
 
 void main() => runApp(MyApp());
 
@@ -9,54 +16,68 @@ class MyApp extends StatelessWidget {
       title: 'Flutter Demo',
       theme: ThemeData.light(),
       darkTheme: ThemeData.dark(),
-      home: MyHomePage(title: 'Web Color Picker'),
+      home: HomeScreen(),
     );
   }
 }
 
-class MyHomePage extends StatefulWidget {
-  MyHomePage({Key key, this.title}) : super(key: key);
-
-  final String title;
-
+class HomeScreen extends StatefulWidget {
   @override
-  _MyHomePageState createState() => _MyHomePageState();
+  _HomeScreenState createState() => _HomeScreenState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
-
-  void _incrementCounter() {
-    setState(() {
-      _counter++;
-    });
+class _HomeScreenState extends State<HomeScreen> {
+  @override
+  void initState() {
+    super.initState();
   }
 
+  Color _value = Colors.white;
+  final _debouncer = Debouncer(milliseconds: 500);
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.title),
-      ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Text(
-              'You have pushed the button this many times:',
-            ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.display1,
-            ),
-          ],
+    return LayoutBuilder(
+      builder: (context, dimens) => Material(
+        child: Center(
+          child: ColorPicker(
+            pickerColor: _value,
+            colorPickerWidth: dimens.maxWidth / 2,
+            onColorChanged: (val) {
+              if (mounted)
+                setState(() {
+                  _value = val;
+                });
+              _debouncer.run(() {
+                final _color = UIColors.colorToString(val.value);
+                print('Color -> $_color');
+                js.context.callMethod('changeColor', ['$_color']);
+              });
+            },
+          ),
         ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: Icon(Icons.add),
+        // floatingActionButton: FloatingActionButton(
+        //   child: Icon(Icons.add),
+        //   onPressed: () {
+        //     js.context.callMethod('changeColor', ['#3aa757']);
+        //   },
+        // ),
       ),
     );
+  }
+}
+
+class Debouncer {
+  final int milliseconds;
+  VoidCallback action;
+  Timer _timer;
+
+  Debouncer({this.milliseconds});
+
+  run(VoidCallback action) {
+    if (_timer != null) {
+      _timer.cancel();
+    }
+
+    _timer = Timer(Duration(milliseconds: milliseconds), action);
   }
 }
