@@ -11,8 +11,8 @@ chrome.runtime.onInstalled.addListener(function () {
   chrome.declarativeContent.onPageChanged.removeRules(undefined, function () {
     chrome.declarativeContent.onPageChanged.addRules([{
       conditions: [new chrome.declarativeContent.PageStateMatcher({
-        pageUrl: { hostEquals: 'dartpad.dartlang.org' },
-        // pageUrl: {hostEquals: 'dartpad.dev'},
+        // pageUrl: { hostEquals: 'dartpad.dartlang.org' },
+        pageUrl: {hostEquals: 'dartpad.dev'},
       })],
       actions: [new chrome.declarativeContent.ShowPageAction()]
     }]);
