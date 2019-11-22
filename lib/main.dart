@@ -51,6 +51,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 final _color = UIColors.colorToString(val.value);
                 print('Color -> $_color');
                 js.context.callMethod('changeColor', ['$_color']);
+                js.context.callMethod('changeCode', ['Test123']);
               });
             },
           ),
