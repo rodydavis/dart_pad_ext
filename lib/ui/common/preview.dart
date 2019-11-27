@@ -5,7 +5,6 @@ import 'package:http/http.dart' as http;
 
 import '../../src/flutter/common.dart';
 import '../../src/flutter/dartservices.dart';
-import '../../src/flutter/dependencies.dart';
 import '../../src/iframe/execution.dart';
 import '../../src/iframe/execution_iframe.dart';
 
@@ -24,12 +23,15 @@ class FlutterWebPreview extends StatefulWidget {
 }
 
 class _FlutterWebPreviewState extends State<FlutterWebPreview> {
-  DartservicesApi get dartServices => DartservicesApi(http.Client());
+  DartservicesApi get dartServices => DartservicesApi(
+        http.Client(),
+        rootUrl: "https://dart-services.appspot.com/",
+      );
   ExecutionService executionSvc;
 
   Future<String> _loadJsCode(String fullCode) {
     var input = CompileRequest()..source = fullCode;
-
+    // print('Input: $fullCode');
     return dartServices
         .compileDDC(input)
         .timeout(longServiceCallTimeout)
