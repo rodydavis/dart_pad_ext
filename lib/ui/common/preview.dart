@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'dart:ui' as ui;
 import 'dart:html' as html;
+import 'package:http/http.dart' as http;
 
 import '../../src/flutter/common.dart';
 import '../../src/flutter/dartservices.dart';
@@ -23,7 +24,7 @@ class FlutterWebPreview extends StatefulWidget {
 }
 
 class _FlutterWebPreviewState extends State<FlutterWebPreview> {
-  DartservicesApi get dartServices => deps[DartservicesApi];
+  DartservicesApi get dartServices => DartservicesApi(http.Client());
   ExecutionService executionSvc;
 
   Future<String> _loadJsCode(String fullCode) {
@@ -44,7 +45,7 @@ class _FlutterWebPreviewState extends State<FlutterWebPreview> {
     }).catchError((e, st) {
       // consoleExpandController.showOutput('Error compiling to JavaScript:\n$e',
       //     error: true);
-      print(st);
+      print('Error: $e -> $st');
       print('execution -> ddc-compile-failure');
       return "";
     });
