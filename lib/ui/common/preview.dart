@@ -36,12 +36,13 @@ class _FlutterWebPreviewState extends State<FlutterWebPreview> {
         .compileDDC(input)
         .timeout(longServiceCallTimeout)
         .then((CompileDDCResponse response) {
-      executionSvc.execute(
-        '',
-        '',
-        response.result,
-        modulesBaseUrl: response.modulesBaseUrl,
-      );
+      // String _url = response?.modulesBaseUrl;
+      // service.execute(
+      //   '',
+      //   '',
+      //   response.result,
+      //   modulesBaseUrl: null,
+      // );
       print('execution -> ddc-compile-success');
       return response.result;
     }).catchError((e, st) {
@@ -54,17 +55,32 @@ class _FlutterWebPreviewState extends State<FlutterWebPreview> {
   }
 
   bool _loaded = false;
-  String _id = 'iframe-output';
+  String _id = 'preview';
   @override
   void initState() {
+    final _iframe = html.IFrameElement();
+    // _iframe.src = 'javascript:void(0);';
+    // _iframe.setInnerHtml(output);
+
+    // final isDarkMode = Theme.of(context).brightness == Brightness.dark;
+    // executionSvc = ExecutionServiceIFrame(_iframe)
+    //   ..frameSrc =
+    //       isDarkMode ? '../scripts/frame_dark.html' : '../scripts/frame.html';
     _loadJsCode(widget.fullCode).then((output) {
-      final _iframe = html.IFrameElement();
-      _iframe.src = 'javascript:void(0);';
-      _iframe.innerHtml = output;
-      final isDarkMode = Theme.of(context).brightness == Brightness.dark;
-      executionSvc = ExecutionServiceIFrame(_iframe)
-        ..frameSrc =
-            isDarkMode ? '../scripts/frame_dark.html' : '../scripts/frame.html';
+      // print('Output: $output');
+
+      final html = "";
+      final css = "";
+      final source = """
+    <html>
+      <head><style>$css</style></head>
+      <body>
+        $html
+        <script>$output</script>
+      </body>
+    </html>
+""";
+      _iframe.srcdoc = source;
       // ignore: undefined_prefixed_name
       ui.platformViewRegistry.registerViewFactory(_id, (int viewId) {
         final element = _iframe

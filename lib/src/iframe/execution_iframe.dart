@@ -22,17 +22,14 @@ class ExecutionServiceIFrame implements ExecutionService {
   final StreamController<TestResult> _testResultsController =
       StreamController<TestResult>.broadcast();
 
-  IFrameElement _frame;
   String _frameSrc;
   Completer _readyCompleter = Completer();
-
-  ExecutionServiceIFrame(this._frame) {
-    _frameSrc = _frame.src;
+  final IFrameElement iframe;
+  ExecutionServiceIFrame(this.iframe) {
+    _frameSrc = iframe.src;
 
     _initListener();
   }
-
-  IFrameElement get frame => _frame;
 
   @override
   Future execute(
@@ -42,10 +39,10 @@ class ExecutionServiceIFrame implements ExecutionService {
     String modulesBaseUrl,
   }) {
     return _reset().whenComplete(() {
-      return _send('execute', {
+      return send('execute', {
         'html': html,
         'css': css,
-        'js': _decorateJavaScript(javaScript, modulesBaseUrl: modulesBaseUrl),
+        'js': decorateJavaScript(javaScript, modulesBaseUrl: modulesBaseUrl),
       });
     });
   }
@@ -55,16 +52,16 @@ class ExecutionServiceIFrame implements ExecutionService {
 
   @override
   void replaceHtml(String html) {
-    _send('setHtml', {'html': html});
+    send('setHtml', {'html': html});
   }
 
   @override
   void replaceCss(String css) {
-    _send('setCss', {'css': css});
+    send('setCss', {'css': css});
   }
 
   set frameSrc(String src) {
-    frame.src = src;
+    iframe.src = src;
     _frameSrc = src;
   }
 
@@ -82,7 +79,7 @@ void _result(bool success, [List<String> messages]) {
 var resultFunction = _result;
 ''';
 
-  String _decorateJavaScript(String javaScript, {String modulesBaseUrl}) {
+  static String decorateJavaScript(String javaScript, {String modulesBaseUrl}) {
     final String postMessagePrint = '''
 const testKey = '$testKey';
 
@@ -186,7 +183,7 @@ require(["dartpad_main", "dart_sdk"], function(dartpad_main, dart_sdk) {
     }
 
     return '$postMessagePrint\n$exceptionHandler\n$requireConfig\n'
-        '$javaScript\n$postfix'
+            '$javaScript\n$postfix'
         .trim();
   }
 
@@ -199,26 +196,26 @@ require(["dartpad_main", "dart_sdk"], function(dartpad_main, dart_sdk) {
   @override
   Stream<TestResult> get testResults => _testResultsController.stream;
 
-  Future _send(String command, Map params) {
+  Future send(String command, Map params) {
     Map m = {'command': command};
     m.addAll(params);
-    frame.contentWindow.postMessage(m, '*');
+    iframe.contentWindow.postMessage(m, '*');
     return Future.value();
   }
 
   /// Destroy and re-load the iframe.
   Future _reset() {
-    if (frame.parent != null) {
+    if (iframe.parent != null) {
       _readyCompleter = Completer();
 
-      IFrameElement clone = _frame.clone(false);
+      IFrameElement clone = iframe.clone(false);
       clone.src = _frameSrc;
 
-      List<Element> children = frame.parent.children;
-      int index = children.indexOf(_frame);
+      List<Element> children = iframe.parent.children;
+      int index = children.indexOf(iframe);
       children.insert(index, clone);
-      frame.parent.children.remove(_frame);
-      _frame = clone;
+      iframe.parent.children.remove(iframe);
+      iframe.replaceWith(clone);
     }
 
     return _readyCompleter.future.timeout(Duration(seconds: 1), onTimeout: () {
