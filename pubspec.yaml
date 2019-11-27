@@ -10,6 +10,7 @@ dependencies:
   flutter_colorpicker: ^0.2.6
   cupertino_icons: ^0.1.2
   color: ^2.1.1
+  _discoveryapis_commons: ^0.1.9
 
 dev_dependencies:
   flutter_test:

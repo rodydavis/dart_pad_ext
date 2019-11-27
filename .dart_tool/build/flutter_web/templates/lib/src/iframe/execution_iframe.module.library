@@ -1,0 +1,1 @@
+{"isEntrypoint":false,"deps":["templates|lib/src/iframe/execution.dart"],"parts":[],"conditionalDeps":[],"sdkDeps":["async","html","js"],"hasMain":false}

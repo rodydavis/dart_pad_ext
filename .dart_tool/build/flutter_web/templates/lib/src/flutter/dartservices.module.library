@@ -1,0 +1,1 @@
+{"isEntrypoint":false,"deps":["_discoveryapis_commons|lib/_discoveryapis_commons.dart","http|lib/http.dart"],"parts":[],"conditionalDeps":[],"sdkDeps":["core","async","convert"],"hasMain":false}

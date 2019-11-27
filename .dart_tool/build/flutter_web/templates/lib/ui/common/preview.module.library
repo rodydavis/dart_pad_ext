@@ -1,0 +1,1 @@
+{"isEntrypoint":true,"deps":["flutter|lib/material.dart","templates|lib/src/flutter/common.dart","templates|lib/src/flutter/dartservices.dart","templates|lib/src/flutter/dependencies.dart","templates|lib/src/iframe/execution.dart","templates|lib/src/iframe/execution_iframe.dart"],"parts":[],"conditionalDeps":[],"sdkDeps":["ui","html"],"hasMain":false}
